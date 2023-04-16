@@ -10,18 +10,12 @@ The Week's Assignment and Lab focuses on how malware loaders inject evil threads
 When the EXE is executed without any inputs from the command line, a message box appears with the title 'Practical Malware Analysis 0' and the phrase 'Press OK to reboot.' I clicked it, but nothing happened. Every minute, the identical message box with the title 'Practical Malware Analysis X' displays, with X corresponds to an incremented counter.
 
 
-![pma12.1_popup](../images/pma12-1_popup.png)
+![img1](https://user-images.githubusercontent.com/66968869/232326972-d7d4d96e-c04c-4e4b-a489-f6a97170bd5b.png)
 
-<!--more-->
-
-In Process Explorer the CPU usage for Interrupts is up between 65-85%.
 
 
 ## 2) What process is being injected?
 When you run strings against the EXE, you get 'explorer.exe' and 'Lab12-01.dll'. In Process Explorer, searching for the handle 'Lab' yields only one result: 'explorer.exe'.
-
-
-![pma12.1_handle](../images/pma12-1_handle.png)
 
 
 
@@ -41,8 +35,8 @@ Then, it iterates through the processes looking for `explorer.exe`.
 
 When the EXE discovers `explorer.exe`, it performs DLL injection, forcing the target to load `Lab12-01.dll` into a new thread from disk.
 
+![img3](https://user-images.githubusercontent.com/66968869/232327548-9e98a120-b6ac-46f4-9658-3a35c1ae2c7c.png)
 
-![pma12.1_inject](../images/pma12-1_inject.png)
 
 The DLL just creates a parent thread, that launches a child thread once per minute, which shows the message box. This will happen until stopped.
 
