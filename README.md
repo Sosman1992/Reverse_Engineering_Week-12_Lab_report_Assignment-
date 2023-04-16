@@ -49,5 +49,11 @@ I then proceeded to Ghidra to see how best I can decompile and analyze this exec
 
 
 ## ANSWERs
+1) Prove of the presence of a loader in the Lab12.exe and also the loader is using DLL injection is shown below:
+   It appears that the loader is using DLL injection to load a DLL named `s_Lab12-01.dll`. Image is shown 
+
+From the above snippet of code from GHIDRA it can be seen that, the loader first creates the path to the DLL with the "GetCurrentDirectoryA" function that takes two argument. And it is able to achieve by this by concatenating the directory path, a separator string, and the DLL filename with the use of "lstrcatA" function.
+
+With the help of `VirtualAllocEx()` memory is then allocated a target process in this case named "path_to_DLL", and with the help of `WriteProcessMemory()` the DLL path to the allocated memory is written to the allocated memory. This leads to the creation of a remote thread in the "path_to_DLL" using the `CreateRemoteThread()` function. The address of this remote thread is also obtained using GetProcAddress() which retrieves the address of the LoadLibraryA() function from the kernel32.dll module. The argument passed to LoadLibraryA() is the address of the memory location containing the DLL path.
 
 
