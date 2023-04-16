@@ -60,5 +60,14 @@ With the help of `VirtualAllocEx()` memory is then allocated a target process in
 
 ![loader](https://user-images.githubusercontent.com/66968869/232346151-d0b4a438-810b-4d39-a2d8-a05d3fabcccc.png)
 
+In conclusion, since the loader is involved in the creation of DLL path from the code and also using VirtualAllocEx() to allocate memory in the target process strongly suggests that it is using DLL injection to load the "s_Lab12-01.dll" DLL. In addition, DLL injection technique is normally seen to use functions including but not limited to "LoadLibrary,CreateRemoteThread,WriteProcessMemory" functions for carrying out its operation.
 
 
+2) The process that will be used for the DLL injection is selected by the `EnumProcesses` function which then uses the `psapi.dll` function to enumerate all running processes on the system. This function populates the local_1120 array with the process IDs of all running processes on the system.
+
+The loader then iterates over the local_1120 array, and for each process ID, it checks if the process is valid by calling the function FUN_00401000 with the process ID as an argument. If the process is valid, it opens a handle to the process using the OpenProcess function with the PROCESS_VM_OPERATION and PROCESS_VM_WRITE access rights.
+
+If the handle to the process is successfully opened, the loader allocates memory in the target process using VirtualAllocEx and writes the path of the DLL to be injected into the allocated memory using WriteProcessMemory. Finally, the loader creates a remote thread in the target process using CreateRemoteThread with the entry point of the LoadLibraryA function and the address of the path of the DLL as arguments.
+
+
+3)
