@@ -54,6 +54,11 @@ I then proceeded to Ghidra to see how best I can decompile and analyze this exec
 
 From the above snippet of code from GHIDRA it can be seen that, the loader first creates the path to the DLL with the "GetCurrentDirectoryA" function that takes two argument. And it is able to achieve by this by concatenating the directory path, a separator string, and the DLL filename with the use of "lstrcatA" function.
 
+![dll](https://user-images.githubusercontent.com/66968869/232346140-a557752d-8d56-44da-9eef-eafae3cc01c0.png)
+
 With the help of `VirtualAllocEx()` memory is then allocated a target process in this case named "path_to_DLL", and with the help of `WriteProcessMemory()` the DLL path to the allocated memory is written to the allocated memory. This leads to the creation of a remote thread in the "path_to_DLL" using the `CreateRemoteThread()` function. The address of this remote thread is also obtained using GetProcAddress() which retrieves the address of the LoadLibraryA() function from the kernel32.dll module. The argument passed to LoadLibraryA() is the address of the memory location containing the DLL path.
+
+![loader](https://user-images.githubusercontent.com/66968869/232346151-d0b4a438-810b-4d39-a2d8-a05d3fabcccc.png)
+
 
 
